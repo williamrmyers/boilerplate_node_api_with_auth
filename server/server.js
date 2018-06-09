@@ -4,8 +4,10 @@ const express = require('express');
 const _ = require('lodash');
 const bodyParser = require('body-parser');
 
+
 let {mongoose} = require('./db/mongoose');
-let {User} =require('./models/user');
+let {User} = require('./models/user');
+let {authenticate} = require('./middleware/authenticate');
 
 
 
@@ -29,10 +31,21 @@ app.post('/users', (req, res) => {
   let user = new User(body);
 
   user.save().then((user) => {
-    res.send(user);
+    return user.generateAuthToken();
+  }).then((token) => {
+    res.header('x-auth', token).send(user);
   }).catch((e) => {
-    res.status(404).send();
-  })
+    res.status(400).send(e);
+  });
+});
+
+app.delete(`/users/me/token`, authenticate, (req, res) => {
+  console.log(req.token);
+  req.user.removeToken(req.token).then(() => {
+    res.status(200).send();
+  }, () => {
+    res.status(400).send();
+  });
 });
 
 

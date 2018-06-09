@@ -16,12 +16,83 @@ let UserSchema = new mongoose.Schema({
       message: '{VALUE} is not a valid email'
     }
   },
+  first_name: {
+    type:String,
+    minlength: 1,
+    max: 50
+  },
+  last_name: {
+    type:String,
+    minlength: 1,
+    max: 50
+  },
   password: {
     type: String,
     require: true,
     minlength: 6
+  },
+  tokens: [{
+  access: {
+    type: String,
+    required: true
+  },
+  token: {
+    type: String,
+    required: true
   }
+}]
 });
+// Custom User methods defined here with es5 function key words.
+
+UserSchema.methods.toJSON = function () {
+  let user = this;
+  let userObject = user.toObject();
+
+  return _.pick(userObject, ['_id', 'email','first_name', 'last_name']);
+};
+
+UserSchema.methods.generateAuthToken = function () {
+  let user = this;
+  let access = 'auth';
+  let token = jwt.sign({_id: user._id.toHexString(), access}, process.env.JWT_SECRET ).toString();
+
+  user.tokens = user.tokens.concat([{access, token}]);
+
+  return user.save().then(() => {
+    return token;
+  });
+};
+
+UserSchema.methods.removeToken = function (token) {
+  let user = this;
+  // The $pull operator removes from an existing array all instances of
+  // a value or values that match a specified condition.
+  // In this case we are removing the array elements that match the 'token' variable passed into the funtion.
+  return user.update({
+    $pull: {
+      tokens:{
+        token: token
+      }
+    }
+  });
+};
+
+UserSchema.statics.findByToken = function (token) {
+  // Get called with model becuse its a static
+  let User = this;
+  let decoded;
+
+  try {
+    decoded = jwt.verify(token, process.env.JWT_SECRET)
+  } catch (e){
+    return Promise.reject();
+  }
+  return User.findOne({
+    "_id": decoded._id,
+    "tokens.token": token,
+    "tokens.access": "auth"
+  });
+};
 
 let User = mongoose.model('User', UserSchema);
 
