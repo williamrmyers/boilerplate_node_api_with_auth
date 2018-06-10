@@ -19,11 +19,11 @@ app.use(bodyParser.json());
 
 
 app.get('/', (req, res)=>{
-  res.send(`This Is Publicly Available Data.`);
+  res.send({text:`This Is Publicly Available Data.`});
 });
 
-app.get('/members', (req, res)=>{
-  res.send(`This is private data only avalable to users who are logged in.`);
+app.get('/members', authenticate, (req, res)=>{
+  res.send({text:`This is private data only avalable to users who are logged in.`});
 });
 
 app.post('/users', (req, res) => {
@@ -39,6 +39,22 @@ app.post('/users', (req, res) => {
   });
 });
 
+app.post(`/users/login`, (req, res) => {
+  let body = _.pick(req.body, ['email', 'password']);
+
+  User.findByCredentials(body.email, body.password).then((user) => {
+    return user.generateAuthToken().then((token) => {
+      res.header('x-auth', token).send(user);
+    });
+  }).catch((e) => {
+    res.status(400).send();
+  })
+});
+
+app.get(`/users/me`, authenticate, (req, res) => {
+  res.send(req.user);
+});
+
 app.delete(`/users/me/token`, authenticate, (req, res) => {
   console.log(req.token);
   req.user.removeToken(req.token).then(() => {
@@ -47,13 +63,6 @@ app.delete(`/users/me/token`, authenticate, (req, res) => {
     res.status(400).send();
   });
 });
-
-
-// User.find({}).then((user) => {
-//   console.log({user});
-// }).catch((e) => {
-//   console.log(`Error running query.`, e);
-// });
 
 
 app.listen(port, ()=>{
