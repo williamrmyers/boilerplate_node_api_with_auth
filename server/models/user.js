@@ -68,7 +68,7 @@ UserSchema.methods.removeToken = function (token) {
   let user = this;
   // The $pull operator removes from an existing array all instances of
   // a value or values that match a specified condition.
-  // In this case we are removing the array elements that match the 'token' variable passed into the funtion.
+  // In this case we are removing the array elements that match the 'token' variable passed into the function.
   return user.update({
     $pull: {
       tokens:{
@@ -78,6 +78,8 @@ UserSchema.methods.removeToken = function (token) {
   });
 };
 
+// function should delete user and all of the users data.
+// currently should delete all user data from the Users database.
 UserSchema.statics.findByCredentials = function (email, password) {
   let User = this;
 

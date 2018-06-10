@@ -55,8 +55,32 @@ app.get(`/users/me`, authenticate, (req, res) => {
   res.send(req.user);
 });
 
+// Changes user data besides password
+app.patch(`/users/me`, authenticate, (req, res) => {
+  let body = _.pick(req.body, ['email', 'first_name', 'last_name']);
+
+  User.findOneAndUpdate({_id: req.user._id}, {$set: body}, {new: true}).then((user)=>{
+  if (!user) {
+    return res.status(404).send();
+  }
+  // success case
+  console.log(req.user);
+  res.send(req.user);
+
+  }).catch(()=>{
+    res.status(400).send();
+  });
+});
+
+app.delete(`/users/me`, authenticate, (req, res) => {
+  req.user.remove().then((user) => {
+    res.status(200).send(user);
+  }, () => {
+    res.status(400).send();
+  });
+});
+
 app.delete(`/users/me/token`, authenticate, (req, res) => {
-  console.log(req.token);
   req.user.removeToken(req.token).then(() => {
     res.status(200).send();
   }, () => {
