@@ -44,6 +44,7 @@ let UserSchema = new mongoose.Schema({
 });
 // Custom User methods defined here with es5 function key words.
 
+// User methods will now only return email, _id, first_name, and last_name.
 UserSchema.methods.toJSON = function () {
   let user = this;
   let userObject = user.toObject();
@@ -93,6 +94,23 @@ UserSchema.statics.findByToken = function (token) {
     "tokens.access": "auth"
   });
 };
+
+// Will hash every password. runs before save, and works by swaping the plane text
+// password with a hashed and salted version before saving.
+UserSchema.pre('save', function (next) {
+  let user = this;
+
+  if (user.isModified('password')) {
+    bcrypt.genSalt(10, (err, salt) => {
+      bcrypt.hash(user.password, salt, (err, hash) => {
+        user.password = hash;
+        next();
+      });
+    });
+  } else {
+    next();
+  }
+});
 
 let User = mongoose.model('User', UserSchema);
 
