@@ -78,9 +78,13 @@ UserSchema.methods.removeToken = function (token) {
   });
 };
 
+
+// This function should eventually confirm the current password
+// as it currently only validates that the user has a valid token.
+
 UserSchema.methods.changePassword = function() {
   let user = this;
-  
+
   return new Promise((resolve, reject) => {
     bcrypt.genSalt(10, (err, salt) => {
       bcrypt.hash(user.password, salt, (err, hash) => {

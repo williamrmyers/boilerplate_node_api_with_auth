@@ -9,9 +9,6 @@ let {mongoose} = require('./db/mongoose');
 let {User} = require('./models/user');
 let {authenticate} = require('./middleware/authenticate');
 
-
-
-
 let app = express();
 const port = process.env.PORT;
 
@@ -59,14 +56,14 @@ app.get(`/users/me`, authenticate, (req, res) => {
 app.patch(`/users/me`, authenticate, (req, res) => {
   let body = _.pick(req.body, ['email', 'first_name', 'last_name']);
 
-  User.findOneAndUpdate({_id: req.user._id}, {$set: body}, {new: true}).then((user)=>{
+  return User.findOneAndUpdate({_id: req.user._id}, {$set: body}, {new: true}).then((user)=>{
   if (!user) {
     return res.status(404).send();
   }
   // success case
   res.send(req.user);
 
-}).catch((e)=>{
+  }).catch((e)=>{
     res.status(400).send(e);
   });
 });
