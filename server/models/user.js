@@ -78,6 +78,22 @@ UserSchema.methods.removeToken = function (token) {
   });
 };
 
+UserSchema.methods.changePassword = function() {
+  let user = this;
+  
+  return new Promise((resolve, reject) => {
+    bcrypt.genSalt(10, (err, salt) => {
+      bcrypt.hash(user.password, salt, (err, hash) => {
+        if (hash) {
+          resolve(hash)
+        } else (
+          reject(err)
+        )
+        });
+      });
+  });
+}
+
 // function should delete user and all of the users data.
 // currently should delete all user data from the Users database.
 UserSchema.statics.findByCredentials = function (email, password) {

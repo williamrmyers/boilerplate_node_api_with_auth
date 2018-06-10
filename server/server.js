@@ -64,13 +64,30 @@ app.patch(`/users/me`, authenticate, (req, res) => {
     return res.status(404).send();
   }
   // success case
-  console.log(req.user);
   res.send(req.user);
 
-  }).catch(()=>{
-    res.status(400).send();
+}).catch((e)=>{
+    res.status(400).send(e);
   });
 });
+
+app.patch(`/users/password_change`, authenticate, (req, res) => {
+
+  let body = _.pick(req.body, ['password']);
+
+  req.user.changePassword().then((password) => {
+    // console.log(user);
+    User.findOneAndUpdate({_id: req.user._id}, {$set: {password}}, {new: true}).then((user) => {
+      if (!user) {
+        return res.status(404).send();
+      }
+      res.send({user});
+    })
+  }).catch((e)=>{
+      res.status(400).send(e);
+    });
+});
+
 
 app.delete(`/users/me`, authenticate, (req, res) => {
   req.user.remove().then((user) => {
