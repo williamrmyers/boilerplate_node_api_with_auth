@@ -4,7 +4,9 @@
   "description": "Boilerplate",
   "main": "server/server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node server/server.js",
+    "test": "export NODE_ENV=test || SET \"NODE_ENV=test\" && mocha server/**/*.test.js",
+    "test-watch": "nodemon --exec 'npm test'"
   },
   "author": "William Myers",
   "license": "ISC",
@@ -17,5 +19,10 @@
     "lodash": "^4.17.10",
     "mongoose": "^4.5.9",
     "validator": "^10.3.0"
+  },
+  "devDependencies": {
+    "expect": "^21.1.0",
+    "mocha": "^3.0.2",
+    "supertest": "^2.0.0"
   }
 }
