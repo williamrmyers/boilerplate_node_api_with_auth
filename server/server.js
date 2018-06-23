@@ -30,7 +30,7 @@ app.use(bodyParser.json());
 
 app.get('/members', authenticate, (req, res)=>{
   res.send({
-    text:`These kittens are only avlable to members!`,
+    text:`These kittens are only avalable to members!`,
     image:[
       'https://media.giphy.com/media/3oriO0OEd9QIDdllqo/giphy.gif',
       'https://media.giphy.com/media/5kjsIIc47PKRq/giphy.gif',
