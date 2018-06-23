@@ -3,14 +3,19 @@ require('./config/config.js');
 const express = require('express');
 const _ = require('lodash');
 const bodyParser = require('body-parser');
+const path = require('path');
 
 
 let {mongoose} = require('./db/mongoose');
 let {User} = require('./models/user');
 let {authenticate} = require('./middleware/authenticate');
+const publicPath = path.join(__dirname, '../public');
 
 let app = express();
 const port = process.env.PORT;
+
+// Sets path for HTML
+app.use(express.static(publicPath));
 
 
 app.use(function(req, res, next) {
@@ -22,11 +27,6 @@ app.use(function(req, res, next) {
 
 
 app.use(bodyParser.json());
-
-
-app.get('/', (req, res)=>{
-  res.send({text:`This Is Publicly Available Data.`});
-});
 
 app.get('/members', authenticate, (req, res)=>{
   res.send({text:`This is private data only avalable to users who are logged in.`});
