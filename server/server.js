@@ -3,6 +3,7 @@ require('./config/config.js');
 const express = require('express');
 const _ = require('lodash');
 const bodyParser = require('body-parser');
+const path = require('path');
 
 
 let {mongoose} = require('./db/mongoose');
@@ -12,24 +13,38 @@ let {authenticate} = require('./middleware/authenticate');
 let app = express();
 const port = process.env.PORT;
 
-// For Enabling CORS
-app.all('*', function(req, res, next) {
-     var origin = req.get('origin');
-     res.header('Access-Control-Allow-Origin', origin);
-     res.header("Access-Control-Allow-Headers", "X-Requested-With");
-     res.header('Access-Control-Allow-Headers', 'Content-Type');
-     next();
+
+if (process.env.NODE_ENV === 'production') {
+  // Serve any static files
+  app.use(express.static(path.join(__dirname, 'client/build')));
+
+  // Handle React routing, return all requests to React app
+  app.get('*', function(req, res) {
+    res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
+  });
+}
+
+
+
+app.use(function(req, res, next) {
+       res.header("Access-Control-Allow-Origin", "*");
+       res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, x-auth, Content-Type, Accept");
+       res.header('Access-Control-Allow-Methods', 'PUT, PATCH, POST, GET, DELETE, OPTIONS');
+          next();
 });
+
 
 app.use(bodyParser.json());
 
-
-app.get('/', (req, res)=>{
-  res.send({text:`This Is Publicly Available Data.`});
-});
-
 app.get('/members', authenticate, (req, res)=>{
-  res.send({text:`This is private data only avalable to users who are logged in.`});
+  res.send({
+    text:`These kittens are only avalable to members!`,
+    image:[
+      'https://media.giphy.com/media/3oriO0OEd9QIDdllqo/giphy.gif',
+      'https://media.giphy.com/media/5kjsIIc47PKRq/giphy.gif',
+      'https://media.giphy.com/media/GKnJPvJh59ywg/giphy.gif'
+      ]
+  });
 });
 
 app.post('/users', (req, res) => {
