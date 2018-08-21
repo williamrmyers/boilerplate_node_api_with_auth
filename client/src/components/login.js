@@ -15,7 +15,7 @@ class Login extends React.Component {
     const error = false;
 
     // // Submit to server
-    axios.post('https://radiant-tor-41424.herokuapp.com/users/login', {
+    axios.post('/users/login', {
       "email": email,
       "password": password
     })

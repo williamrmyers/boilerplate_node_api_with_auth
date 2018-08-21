@@ -20,7 +20,7 @@ class Signup extends React.Component {
 
 
     // // Submit to server
-    axios.post('https://radiant-tor-41424.herokuapp.com/users', {
+    axios.post('/users', {
       "email": email,
       "first_name": firstName,
       "last_name": lastName,

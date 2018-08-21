@@ -30,7 +30,7 @@ class Settings extends React.Component {
       headers: {'x-auth': token }
     };
 
-    axios.get('https://radiant-tor-41424.herokuapp.com/users/me', authHeaders)
+    axios.get('/users/me', authHeaders)
       .then((response) => {
         this.setMessage(response.data.text)
         this.setState({
@@ -72,7 +72,7 @@ class Settings extends React.Component {
     console.log('newNameBody ',newNameBody);
 
     // Make Request
-    axios.patch('https://radiant-tor-41424.herokuapp.com/users/me', newNameBody, authHeaders)
+    axios.patch('/users/me', newNameBody, authHeaders)
       .then((response) => {
         console.log(response.data);
         this.toggleNameModal();
@@ -90,7 +90,7 @@ class Settings extends React.Component {
     const authHeaders = { headers: {'x-auth': token }};
 
     // Make Request
-    axios.delete('https://radiant-tor-41424.herokuapp.com/users/me', authHeaders)
+    axios.delete('/users/me', authHeaders)
       .then((response) => {
         console.log('Deleted',response.data);
         cookies.remove('auth', { path: '/' });

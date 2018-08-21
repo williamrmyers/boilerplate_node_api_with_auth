@@ -25,7 +25,7 @@ class Home extends React.Component {
         headers: {'x-auth': token }
       };
 
-      axios.get('https://radiant-tor-41424.herokuapp.com/members', authHeaders)
+      axios.get('/members', authHeaders)
         .then((response) => {
           this.setData(response.data)
         })
