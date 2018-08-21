@@ -4,11 +4,11 @@
   "description": "Boilerplate",
   "scripts": {
     "client": "cd client && npm run start",
-    "server": "node server/server.js",
+    "server": "nodemon server/server.js",
     "dev": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\"",
     "test": "export NODE_ENV=test || SET \"NODE_ENV=test\" && mocha server/**/*.test.js",
     "test-watch": "nodemon --exec 'npm test'",
-    "start": "node server.js",
+    "start": "node server/server.js",
     "heroku-postbuild": "cd client && npm install && npm install --only=dev --no-shrinkwrap && npm run build"
   },
   "author": "William Myers",
