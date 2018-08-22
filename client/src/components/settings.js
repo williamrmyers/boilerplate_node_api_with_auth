@@ -2,7 +2,6 @@ import React from 'react';
 import axios from 'axios';
 import Cookies from 'universal-cookie';
 import NameChangeModal from './namechangemodal';
-import {Redirect} from 'react-router-dom';
 
 
 class Settings extends React.Component {

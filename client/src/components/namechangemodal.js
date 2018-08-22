@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import Modal from 'react-modal';
 import Confirmation from './reusableComponents/confirmation';
 
@@ -60,7 +60,7 @@ class NameChangeModal extends React.Component {
         transform             : 'translate(-50%, -50%)'
       }
     };
-    
+
     return (
       <Modal
       isOpen = {this.props.isOpen}

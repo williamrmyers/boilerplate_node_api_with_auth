@@ -1,6 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Route, Switch, Link, NavLink} from 'react-router-dom';
-import Modal from 'react-modal';
+import { NavLink } from 'react-router-dom';
 
 class Header extends React.Component {
   state = {

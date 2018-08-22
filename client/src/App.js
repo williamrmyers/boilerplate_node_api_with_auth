@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { BrowserRouter, Route, Switch, Link, NavLink, Redirect} from 'react-router-dom';
+import { BrowserRouter, Route, Switch, Redirect} from 'react-router-dom';
 import './App.css'
 import Cookies from 'universal-cookie';
 import axios from 'axios';
