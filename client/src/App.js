@@ -94,19 +94,76 @@ class AppRouter extends Component {
 
   render() {
     return (
+      <div>
+        <NewRouter
+          {...this.state}
+          isAuthenticated={this.state.authenticated}
+          logOut={this.logOut}
+          handelSubmit={this.handelSubmit}
+        />
+      </div>
+    )
+  }
+}
+
+{/*New Router*/}
+
+class NewRouter extends Component {
+  render() {
+    const header = (props) => {
+      return (
+        <Header
+          {...props}
+          {...this.props}
+        />
+      );
+    };
+    const home = (props) => {
+      return (
+        <Home
+          {...props}
+          {...this.props}
+        />
+      );
+    };
+    const signup = (props) => {
+      return (
+        <Signup
+          {...props}
+          {...this.props}
+        />
+      );
+    };
+    const login = (props) => {
+      return (
+        <Login
+          {...props}
+          {...this.props}
+        />
+      );
+    }
+      const settings = (props) => {
+        return (
+          <Settings
+            {...props}
+            {...this.props}
+          />
+        );
+    };
+    return (
       <BrowserRouter>
         <div>
-          <Route render={(props) => <Header {...props} isAuthenticated={this.state.authenticated} logOut={this.logOut} />}/>
-          <Switch>
-              <Route path="/" render={(props) => <Home {...props} isAuthenticated={this.state.authenticated} token={this.state.token} />} exact/>
-              <Route path="/signup" exact render={(props) => <Signup {...props} isAuthenticated={this.state.authenticated} handelSubmit={this.handelSubmit} />} />
-              <Route path="/login" exact render={(props) => <Login {...props} isAuthenticated={this.state.authenticated} handelSubmit={this.handelSubmit} />} />
-              <PrivateRoute path="/settings" component={Settings} exact/>
-              <Route component={NotFound}/>
-          </Switch>
+        <Route component={header}/>
+        <Switch>
+          <Route exact path='/' component={home}/>
+          <Route exact path='/signup' component={signup}/>
+          <Route exact path='/login' component={login}/>
+          <PrivateRoute exact path='/settings' component={settings}/>
+          <Route component={NotFound}/>
+        </Switch>
         </div>
       </BrowserRouter>
-    )
+    );
   }
 }
 
