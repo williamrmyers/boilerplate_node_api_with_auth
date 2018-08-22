@@ -13,17 +13,6 @@ let {authenticate} = require('./middleware/authenticate');
 let app = express();
 const port = process.env.PORT;
 
-
-if (process.env.NODE_ENV === 'production') {
-  const publicPath = path.join(__dirname, '../client/build');
-  // Sets path for HTML
-  app.use(express.static(publicPath));
-
-  app.get('/', function(req, res) {
-    res.sendFile(path.join(__dirname, '../client/build', 'index.html'));
-  });
-}
-
 app.use(function(req, res, next) {
        res.header("Access-Control-Allow-Origin", "*");
        res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, x-auth, Content-Type, Accept");
@@ -132,6 +121,15 @@ app.delete(`/users/me/token`, authenticate, (req, res) => {
   });
 });
 
+if (process.env.NODE_ENV === 'production') {
+  const publicPath = path.join(__dirname, '../client/build');
+  // Sets path for HTML
+  app.use(express.static(publicPath));
+
+  app.get('*', function(req, res) {
+    res.sendFile(path.join(__dirname, '../client/build', 'index.html'));
+  });
+}
 
 app.listen(port, ()=>{
   console.log(`App started on port ${port}`);
