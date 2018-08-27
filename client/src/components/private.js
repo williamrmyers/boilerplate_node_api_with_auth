@@ -26,7 +26,7 @@ class Private extends React.Component {
       headers: {'x-auth': token }
     };
 
-    axios.get('https://radiant-tor-41424.herokuapp.com/members', authHeaders)
+    axios.get('https://localhost:3000/members', authHeaders)
       .then((response) => {
         console.log(response.data.text);
         this.setData(response.data)
