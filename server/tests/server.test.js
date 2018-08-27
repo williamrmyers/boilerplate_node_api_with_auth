@@ -42,15 +42,6 @@ const populateUsers = (done) => {
 // Testing Lifecycle Method
 beforeEach(populateUsers);
 
-describe('Get public route.', () => {
-  it('Should get Public route.', (done) => {
-    request(app)
-      .get('/')
-      .expect(200)
-      .end(done)
-  });
-});
-
 describe('Get members route.', () => {
   it('Should get private route if authenticated.', (done) => {
     request(app)
