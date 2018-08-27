@@ -106,7 +106,7 @@ class AppRouter extends Component {
   }
 }
 
-{/*New Router*/}
+/*New Router*/
 
 class NewRouter extends Component {
   render() {

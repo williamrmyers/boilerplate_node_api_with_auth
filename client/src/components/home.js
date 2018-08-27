@@ -51,6 +51,8 @@ class Home extends React.Component {
                     <h3>Boom</h3>
                     <p>Your now logged in and requesting data from the server.</p>
                     <p>{this.state.text}</p>
+                    <img src={this.state.kittens[0]} alt="Another Cute Kitten"/>
+                    <br/>
                     <img src={this.state.kittens[2]} alt="Another Cute Kitten"/>
                   </div>
                 </div>
