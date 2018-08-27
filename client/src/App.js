@@ -16,7 +16,7 @@ import NotFound from './components/notFound';
 
 let isAuthenticated = false;
 
-// This function serves to tell the routes whether the user is autheticated ot not
+// This function serves to tell the routes whether the user is autheticated or not
 // And manages the cookies.
 const auth = {
   isAuthenticated: false,

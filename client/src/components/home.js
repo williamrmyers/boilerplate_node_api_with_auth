@@ -1,5 +1,4 @@
 import React from 'react';
-import Cookies from 'universal-cookie';
 import axios from 'axios';
 
 class Home extends React.Component {
@@ -18,30 +17,26 @@ class Home extends React.Component {
   }
 
   getMembersData = () => {
-    const cookies = new Cookies();
-    const token = cookies.get('auth');
-    if (token) {
-      const authHeaders = {
-        headers: {'x-auth': token }
-      };
+    const authHeaders = {
+      headers: {'x-auth': this.props.token }
+    };
 
-      axios.get('/members', authHeaders)
-        .then((response) => {
-          this.setData(response.data)
-          console.log(response.data);
-        })
-        .catch((error) => {
-          console.log(error);
-      });
-    }
+    axios.get('/members', authHeaders)
+      .then((response) => {
+        this.setData(response.data)
+        console.log(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+    });
   }
 
-  // componentDidUpdate(nextProps, nextState) {
-  //   this.getMembersData();
-  // }
-
   componentWillMount() {
-    this.getMembersData();
+    console.log('home ',this.props.isAuthenticated, this.props.token);
+
+    if (this.props.isAuthenticated) {
+      this.getMembersData();
+    }
   }
 
   render() {
