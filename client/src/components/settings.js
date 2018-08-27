@@ -20,13 +20,8 @@ class Settings extends React.Component {
   }
 
   getMeData = () => {
-    // get Headers from cookie
-    const cookies = new Cookies();
-    const token = cookies.get('auth');
-    console.log(token);
-
     const authHeaders = {
-      headers: {'x-auth': token }
+      headers: {'x-auth': this.props.token }
     };
 
     axios.get('/users/me', authHeaders)
@@ -51,13 +46,8 @@ class Settings extends React.Component {
   }
 
   changeNameOnServer = (newName) => {
-    // get Headers from cookie
-    const cookies = new Cookies();
-    const token = cookies.get('auth');
-    console.log(token);
-
     const authHeaders = {
-      headers: {'x-auth': token }
+      headers: {'x-auth': this.props.token }
     };
     console.log(newName);
     // Build request body
@@ -83,15 +73,14 @@ class Settings extends React.Component {
   }
 
   deleteAccount = (newName) => {
-    // get Headers from cookie
     const cookies = new Cookies();
-    const token = cookies.get('auth');
-    const authHeaders = { headers: {'x-auth': token }};
+    const authHeaders = { headers: {'x-auth': this.props.token }};
 
     // Make Request
     axios.delete('/users/me', authHeaders)
       .then((response) => {
         console.log('Deleted',response.data);
+        // Delete token cookie
         cookies.remove('auth', { path: '/' });
         this.setState(() => ({ redirect: true }))
       })
