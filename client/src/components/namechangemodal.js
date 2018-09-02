@@ -7,13 +7,15 @@ class NameChangeModal extends React.Component {
   state = {
       newFirstName: false,
       newLastName: false,
-      confirmation: false,
+      newEmail: false,
+      confirmation: false
   }
 
   confirmedChange = () => {
     const newName = {
       firstName: this.state.newFirstName,
-      lastName: this.state.newLastName
+      lastName: this.state.newLastName,
+      email: this.state.newEmail
     }
     this.props.changeNameOnServer(newName);
     this.hideConfirmation();
@@ -34,11 +36,13 @@ class NameChangeModal extends React.Component {
 
     const newName = {
       firstName: e.target.elements.firstName.value.trim(),
-      lastName: e.target.elements.lastName.value.trim()
+      lastName: e.target.elements.lastName.value.trim(),
+      email: e.target.elements.email.value.trim()
     }
     this.setState(() => ({
       newFirstName : newName.firstName,
-      newLastName: newName.lastName
+      newLastName: newName.lastName,
+      newEmail: newName.email
       })
     );
     // this.props.getNewNameFromModal(newName);
@@ -74,7 +78,7 @@ class NameChangeModal extends React.Component {
             <Confirmation
             yes = {this.confirmedChange}
             no = {this.hideConfirmation}
-            confirmationMessage = 'Are you sure you want to change your name?'
+            confirmationMessage = 'Are you sure you want to change your contact info?'
             yesButtonStyle='is-danger'
             ariaHideApp={false}
 
@@ -85,16 +89,24 @@ class NameChangeModal extends React.Component {
               <div className="field">
                 <label className="label">First Name</label>
                 <div className="control">
-                  <input className="input" type="text" placeholder="New First Name" name="firstName"/>
+                  <input className="input" type="text" placeholder="New First Name" defaultValue={this.props.firstName} name="firstName"/>
                 </div>
               </div>
 
               <div className="field">
                 <label className="label">Last Name</label>
                 <div className="controlclassName">
-                  <input className="input" type="text" placeholder="New Last Name" name="lastName"/>
+                  <input className="input" type="text" placeholder="New Last Name" defaultValue={this.props.lastName} name="lastName"/>
                 </div>
               </div>
+
+              <div className="field">
+                <label className="label">Email</label>
+                <div className="control">
+                  <input className="input" type="text" placeholder="New Email" defaultValue={this.props.email} name="email"/>
+                </div>
+              </div>
+
               <div className="field is-grouped">
               <div className="control">
                 <button className="button is-link">Submit</button>

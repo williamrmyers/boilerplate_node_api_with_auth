@@ -58,6 +58,9 @@ class Settings extends React.Component {
     if (newName.lastName) {
       newNameBody.last_name = newName.lastName;
     }
+    if (newName.email) {
+      newNameBody.email = newName.email;
+    }
     console.log('newNameBody ',newNameBody);
 
     // Make Request
@@ -65,6 +68,12 @@ class Settings extends React.Component {
       .then((response) => {
         console.log(response.data);
         this.toggleNameModal();
+        // Update UI on success
+        this.setState({
+          firstName: newName.firstName,
+          lastName: newName.lastName,
+          email: newName.email
+        });
       })
       .catch((error) => {
         console.log(error);
@@ -101,11 +110,9 @@ render () {
                         <p>
                           <strong>First Name:</strong> {this.state.firstName} <br/>
                           <strong>Last Name:</strong> {this.state.lastName} <br/>
-                          <a onClick={this.toggleNameModal} className="button">Change</a> <br/>
                           <strong>Email</strong>: {this.state.email} <br/>
-                          <a className="button">Change</a> <br/>
+                          <a onClick={this.toggleNameModal} className="button">Change Info</a> <br/>
                         </p>
-                      <br/>
                       <a onClick={this.deleteAccount} className="button">Delete Account</a>
                       </div>
                     </div>
@@ -118,6 +125,7 @@ render () {
                   ClassName = 'MyModal'
                   firstName = {this.state.firstName}
                   lastName = {this.state.lastName}
+                  email = {this.state.email}
                   />
 
                 { this.state.redirect ? <meta httpEquiv="refresh" content="0; URL='/'" /> : null}
